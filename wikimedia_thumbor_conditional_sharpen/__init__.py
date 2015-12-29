@@ -34,8 +34,16 @@ class Filter(BaseFilter):
             resize_ratio_threshold):
 
         width, height = self.engine.size
-        original_width = self.engine.source_width
-        original_height = self.engine.source_height
+        try:
+            original_width = self.context.request.source_width
+        except AttributeError:
+            original_width = self.engine.source_width
+
+        try:
+            original_height = self.context.request.source_height
+        except AttributeError:
+            original_height = self.engine.source_height
+
         mode, data = self.engine.image_data_as_rgb()
         source_sum = float(original_width + original_height)
         destination_sum = float(width + height)
